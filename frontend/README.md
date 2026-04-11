@@ -48,11 +48,17 @@ http://localhost:3000
 src/
 	app/
 		page.tsx              # tela inicial
-		loginPage/page.tsx    # tela de login
-		register/page.tsx     # tela de cadastro
+		login/page.tsx        # tela de login
+		signup/page.tsx       # tela de cadastro
+		(protected)/
+			dashboard/page.tsx
 		layout.tsx            # layout raiz
-		template.tsx          # transicao de entrada entre rotas
 		globals.css           # estilos globais
+	components/
+		cards/RouteCards.tsx
+		search/SearchBar.tsx
+		navigation/TabBar.tsx
+	types/
 ```
 
 ## Funcionalidades atuais

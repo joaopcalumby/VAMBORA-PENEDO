@@ -1,35 +1,43 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
-import { MoveRight } from 'lucide-react';
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const duration = 5000;
+    const timeout = window.setTimeout(() => {
+      router.push("/login");
+    }, duration);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [router]);
+
   return (
-    <main className="relative flex h-screen flex-col items-center justify-around overflow-hidden bg-gradient-to-t from-[#304643] to-[#1D2927]">
-      <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#20FC8F]/20 blur-3xl animate-pulse" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-[#20FC8F]/10 blur-3xl animate-pulse" />
+    <main className="relative flex h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-[#15211f] via-[#203330] to-[#0c1413] px-6">
+      <section className="loader-center page-enter">
+        <div className="loader-spinner">
+          <div className="loader-spinner-track" />
+          <div className="loader-spinner-fill" />
+        </div>
 
-      <Link
-        href="/loginPage"
-        className="z-10 w-full rounded px-4 py-2 text-center text-white font-medium"
-      >
-        <section className="flex h-screen flex-col items-center justify-around">
-          <div />
-
-          <div className="logo-float page-enter">
+        <div className="loader-logo logo-float">
+          <div className="loader-logo-shell">
             <Image
               src="/logovambora.svg"
-              alt="Hero Image"
-              width={220}
-              height={220}
+              alt="Vambora Penedo"
+              width={160}
+              height={160}
               priority
             />
           </div>
-
-          <p className="flex justify-center text-m items-center page-enter text-lg gap-2 text-white/95">
-            Clique para prosseguir <MoveRight />
-          </p>
-        </section>
-      </Link>
+        </div>
+      </section>
     </main>
   );
 }

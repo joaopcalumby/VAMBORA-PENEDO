@@ -52,7 +52,10 @@ def create_access_token(email: str) -> str:
 @app.on_event("startup")
 def startup():
     init_db()
-    print("✅ Banco de dados inicializado!")
+    print("Banco de dados inicializado com sucesso!")
+    yield
+
+app = FastAPI(title="Vambora Penedo", lifespan=lifespan)
 
 @app.get("/")
 def read_root():

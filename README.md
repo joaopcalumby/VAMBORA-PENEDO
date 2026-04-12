@@ -15,8 +15,10 @@ Backend:
 
 ```bash
 cd backend
-uvicorn main:app --reload
+uvicorn app.main:app --reload --port 8000
 ```
+
+O banco local usa SQLite por padrao em `backend/vambora.db` quando `DATABASE_URL` nao estiver definido.
 
 Frontend:
 

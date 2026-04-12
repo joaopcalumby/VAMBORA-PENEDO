@@ -39,6 +39,11 @@ function SignupPage() {
             return;
         }
 
+        if (form.password.length > 25) {
+            setErrorMessage("A senha deve ter no maximo 25 caracteres.");
+            return;
+        }
+
         if (form.password !== form.confirmPassword) {
             setErrorMessage("As senhas nao coincidem.");
             return;
@@ -177,6 +182,7 @@ function SignupPage() {
                             name="password"
                             placeholder="********"
                             className="app-input"
+                            maxLength={25}
                             value={form.password}
                             onChange={(e) => handleChange("password", e.target.value)}
                             required

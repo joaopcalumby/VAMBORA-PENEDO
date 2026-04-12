@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app  # Hot reload local, opcional em prod
+      - backend_db:/app/data  # Garante persistência se usarmos sqlite em pasta data ou vambora.db
+    env_file:
+      - .env
+    environment:
+      # Sobrescreve para usar a DB em volume local
+      - DATABASE_URL=sqlite:////app/vambora.db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend_db:

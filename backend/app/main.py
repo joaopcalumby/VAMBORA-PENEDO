@@ -16,7 +16,14 @@ app = FastAPI(title="Vambora Penedo")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+        "http://127.0.0.1:3002",
+    ],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,25 +41,31 @@ class RegisterRequest(BaseModel):
     email: str = Field(min_length=3, max_length=255)
     password: str = Field(min_length=6, max_length=25)
 
+
 class LoginRequest(BaseModel):
     email: str
     password: str
 
+
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
+
 
 def create_access_token(email: str) -> str:
     expires_at = datetime.now(timezone.utc) + timedelta(hours=JWT_EXPIRES_HOURS)
     payload = {"sub": email, "exp": expires_at}
     return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM)
 
+
 @app.on_event("startup")
 def startup():
     init_db()
     print("✅ Banco de dados inicializado!")
+
 
 @app.get("/")
 def read_root():
@@ -91,6 +104,7 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         },
     }
 
+
 @app.post("/auth/login")
 def login(payload: LoginRequest, db: Session = Depends(get_db)):
     user = db.scalar(select(User).where(User.email == payload.email))
@@ -110,6 +124,8 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         },
     }
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -14,13 +14,14 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Senha", type: "password" },
       },
       async authorize(credentials) {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const apiUrl = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL;
 
         if (!apiUrl || !credentials?.email || !credentials?.password) {
           return null;
         }
 
-        const response = await fetch(`${apiUrl}/auth/login`, {
+        const cleanApiUrl = apiUrl.replace(/\/$/, "");
+        const response = await fetch(`${cleanApiUrl}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

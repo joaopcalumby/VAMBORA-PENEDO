@@ -59,7 +59,8 @@ function SignupPage() {
                 return;
             }
 
-            const response = await fetch(`${apiUrl}/register`, {
+            const cleanApiUrl = apiUrl.replace(/\/$/, "");
+            const response = await fetch(`${cleanApiUrl}/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

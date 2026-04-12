@@ -15,11 +15,15 @@ Para rodar todo o ecossistema (banco de dados, api e website) de modo orquestrad
 
 1. **Clone este repositório:**
 
-   ```bash
-   git clone https://github.com/joaopcalumby/VAMBORA-PENEDO.git
-   cd VAMBORA-PENEDO
-   ```
-2. **Crie suas as variáveis de ambiente:**
+```bash
+cd backend
+uvicorn app.main:app --reload --port 8000
+```
+
+O banco local usa SQLite por padrao em `backend/vambora.db` quando `DATABASE_URL` nao estiver definido.
+
+Frontend:
+>>>>>>>>> Temporary merge branch 2
 
    - Faça uma cópia do arquivo `.env.example` chamando de `.env` na raiz do projeto (mesma pasta deste arquivo README.md).
    - Preencha os campos solicitados (como o `SECRET_KEY`).

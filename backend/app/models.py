@@ -74,3 +74,17 @@ class Feedback:
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     
     user: Mapped["User"] = relationship(back_populates="feedbacks", init=False)
+
+@table_registry.mapped_as_dataclass
+class Viagem:
+    __tablename__ = 'viagens'
+    
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    valor_pago: Mapped[float] = mapped_column(Float)
+    data_viagem: Mapped[datetime] = mapped_column(init=False, server_default=func.now())
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    linha_id: Mapped[int] = mapped_column(ForeignKey('linhas.id_linha'))
+    
+    # Relacionamentos para facilitar a busca (back_populates não é obrigatório aqui, mas ajuda)
+    user: Mapped["User"] = relationship(init=False)
+    linha: Mapped["Linha"] = relationship(init=False)

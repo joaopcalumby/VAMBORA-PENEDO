@@ -88,3 +88,49 @@ class Viagem:
     # Relacionamentos para facilitar a busca (back_populates não é obrigatório aqui, mas ajuda)
     user: Mapped["User"] = relationship(init=False)
     linha: Mapped["Linha"] = relationship(init=False)
+
+@table_registry.mapped_as_dataclass
+class Alerta:
+    __tablename__ = 'alertas'
+    
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    titulo: Mapped[str]
+    descricao: Mapped[str]
+    tipo: Mapped[str] # 'atraso', 'mudanca_horario', 'mudanca_rota', 'tarifa', 'proximidade'
+    severidade: Mapped[str] # 'baixa', 'media', 'alta'
+    ativa: Mapped[bool] = mapped_column(default=True)
+    lido: Mapped[bool] = mapped_column(default=False)
+    data_criacao: Mapped[datetime] = mapped_column(init=False, server_default=func.now())
+    data_atualizacao: Mapped[datetime] = mapped_column(init=False, server_default=func.now())
+    
+    # Detalhes adicionais para diferentes tipos
+    minutos_atraso: Mapped[Optional[int]] = mapped_column(default=None)  # Para atrasos
+    horario_anterior: Mapped[Optional[str]] = mapped_column(default=None)  # Para mudanças
+    horario_novo: Mapped[Optional[str]] = mapped_column(default=None)
+    
+    id_linha: Mapped[Optional[int]] = mapped_column(ForeignKey('linhas.id_linha'), default=None)
+    linha: Mapped[Optional["Linha"]] = relationship(init=False)
+
+@table_registry.mapped_as_dataclass
+class AlertaProximidade:
+    __tablename__ = 'alertas_proximidade'
+    
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    linha_id: Mapped[int] = mapped_column(ForeignKey('linhas.id_linha'))
+    
+    latitude_usuario: Mapped[float] = mapped_column(Float)
+    longitude_usuario: Mapped[float] = mapped_column(Float)
+    
+    latitude_veiculo: Mapped[Optional[float]] = mapped_column(Float, default=None)
+    longitude_veiculo: Mapped[Optional[float]] = mapped_column(Float, default=None)
+    
+    distancia_metros: Mapped[Optional[int]] = mapped_column(default=None)
+    eta_minutos: Mapped[Optional[int]] = mapped_column(default=None)
+    
+    ativo: Mapped[bool] = mapped_column(default=True)
+    data_criacao: Mapped[datetime] = mapped_column(init=False, server_default=func.now())
+    data_ultima_atualizacao: Mapped[datetime] = mapped_column(init=False, server_default=func.now())
+    
+    user: Mapped["User"] = relationship(init=False)
+    linha: Mapped["Linha"] = relationship(init=False)

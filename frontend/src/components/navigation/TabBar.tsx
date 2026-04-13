@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Map, User } from "lucide-react";
+import { Home, Map, User, Wallet } from "lucide-react";
 
 const navItems = [
   { name: "Home", href: "/dashboard", icon: Home },
   { name: "Rotas", href: "/rotas", icon: Map },
-  { name: "Perfil", href: "/perfil", icon: User },
+  {name: "Carteira", href: "/carteira", icon: Wallet },
+  { name: "Perfil", href: "/profile", icon: User },
 ];
 
 export default function TabBar() {
@@ -15,7 +16,7 @@ export default function TabBar() {
 
   return (
     <nav className="fixed bottom-3 left-1/2 z-50 h-16 w-[calc(100%-1rem)] max-w-lg -translate-x-1/2 rounded-2xl border border-gray-200 bg-white shadow-lg">
-      <div className="grid h-full grid-cols-3 px-2 font-medium">
+      <div className="grid h-full grid-cols-4 px-2 font-medium">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;

@@ -3,9 +3,13 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from app.models import table_registry
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# Base path of the overall project ROOT
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+env_path = BASE_DIR / ".env"
+load_dotenv(dotenv_path=env_path)
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./vambora.db")
 

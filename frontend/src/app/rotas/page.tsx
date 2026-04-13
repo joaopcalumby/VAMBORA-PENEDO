@@ -79,8 +79,6 @@ export default function RotasPage() {
 
   return (
     <main className="relative h-screen w-full bg-[#0B0E14] overflow-hidden">
-      
-      {/* Botão Voltar Superior */}
       <div className="absolute left-4 top-4 z-[9999] sm:left-6 sm:top-6">
         <Link 
           href="/dashboard" 

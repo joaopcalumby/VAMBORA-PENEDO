@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { Compass, RotateCcw } from "lucide-react";
 
@@ -30,14 +30,86 @@ interface MapVisualizerProps {
   token: string;
 }
 
+type MapViewStyle = "satellite" | "standard";
+
+const MAP_STYLES: Record<MapViewStyle, string> = {
+  satellite: "mapbox://styles/mapbox/satellite-streets-v12",
+  standard: "mapbox://styles/mapbox/streets-v12",
+};
+
 export default function MapVisualizer({ selectedRoute, token }: MapVisualizerProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
+  const lastAppliedStyleRef = useRef<MapViewStyle>("satellite");
   const [is3D, setIs3D] = useState(true);
+  const [mapViewStyle, setMapViewStyle] = useState<MapViewStyle>("satellite");
   const [isReady, setIsReady] = useState(false);
 
   const penedoCenter = useMemo<[number, number]>(() => [-36.5858, -10.2909], []);
-  const mapboxStyle = "mapbox://styles/mapbox/satellite-streets-v12";
+
+  const configureSceneLayers = useCallback((map: mapboxgl.Map) => {
+    if (!map.getSource("mapbox-dem")) {
+      map.addSource("mapbox-dem", {
+        type: "raster-dem",
+        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+        tileSize: 512,
+        maxzoom: 14,
+      });
+    }
+
+    if (!map.getLayer("3d-buildings")) {
+      const layers = map.getStyle().layers ?? [];
+      const labelLayerId = layers.find(
+        (layer) => layer.type === "symbol" && layer.layout && "text-field" in layer.layout,
+      )?.id;
+
+      map.addLayer(
+        {
+          id: "3d-buildings",
+          source: "composite",
+          "source-layer": "building",
+          filter: ["==", "extrude", "true"],
+          type: "fill-extrusion",
+          minzoom: 14,
+          paint: {
+            "fill-extrusion-color": "#7b8b94",
+            "fill-extrusion-height": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              14,
+              0,
+              14.05,
+              ["get", "height"],
+            ],
+            "fill-extrusion-base": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              14,
+              0,
+              14.05,
+              ["get", "min_height"],
+            ],
+            "fill-extrusion-opacity": 0.8,
+          },
+        },
+        labelLayerId,
+      );
+    }
+
+    if (!map.getLayer("sky")) {
+      map.addLayer({
+        id: "sky",
+        type: "sky",
+        paint: {
+          "sky-type": "atmosphere",
+          "sky-atmosphere-sun": [0, 0],
+          "sky-atmosphere-sun-intensity": 10,
+        },
+      });
+    }
+  }, []);
 
   const updateRouteSource = (
     map: mapboxgl.Map,
@@ -111,7 +183,7 @@ export default function MapVisualizer({ selectedRoute, token }: MapVisualizerPro
 
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style: mapboxStyle,
+      style: MAP_STYLES.satellite,
       center: penedoCenter,
       zoom: 14.2,
       pitch: 60,
@@ -121,70 +193,10 @@ export default function MapVisualizer({ selectedRoute, token }: MapVisualizerPro
 
     mapRef.current = map;
 
-    map.on("load", () => {
+    map.on("style.load", () => {
+      setIsReady(false);
+      configureSceneLayers(map);
       setIsReady(true);
-
-      if (!map.getSource("mapbox-dem")) {
-        map.addSource("mapbox-dem", {
-          type: "raster-dem",
-          url: "mapbox://mapbox.mapbox-terrain-dem-v1",
-          tileSize: 512,
-          maxzoom: 14,
-        });
-      }
-
-      if (!map.getLayer("3d-buildings")) {
-        const layers = map.getStyle().layers ?? [];
-        const labelLayerId = layers.find(
-          (layer) => layer.type === "symbol" && layer.layout && "text-field" in layer.layout,
-        )?.id;
-
-        map.addLayer(
-          {
-            id: "3d-buildings",
-            source: "composite",
-            "source-layer": "building",
-            filter: ["==", "extrude", "true"],
-            type: "fill-extrusion",
-            minzoom: 14,
-            paint: {
-              "fill-extrusion-color": "#7b8b94",
-              "fill-extrusion-height": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                14,
-                0,
-                14.05,
-                ["get", "height"],
-              ],
-              "fill-extrusion-base": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                14,
-                0,
-                14.05,
-                ["get", "min_height"],
-              ],
-              "fill-extrusion-opacity": 0.8,
-            },
-          },
-          labelLayerId,
-        );
-      }
-
-      if (!map.getLayer("sky")) {
-        map.addLayer({
-          id: "sky",
-          type: "sky",
-          paint: {
-            "sky-type": "atmosphere",
-            "sky-atmosphere-sun": [0, 0],
-            "sky-atmosphere-sun-intensity": 10,
-          },
-        });
-      }
     });
 
     return () => {
@@ -192,7 +204,23 @@ export default function MapVisualizer({ selectedRoute, token }: MapVisualizerPro
       mapRef.current = null;
       setIsReady(false);
     };
-  }, [penedoCenter, token]);
+  }, [configureSceneLayers, penedoCenter, token]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map || !token) {
+      return;
+    }
+
+    if (lastAppliedStyleRef.current === mapViewStyle) {
+      return;
+    }
+
+    lastAppliedStyleRef.current = mapViewStyle;
+    setIsReady(false);
+    map.setStyle(MAP_STYLES[mapViewStyle]);
+  }, [mapViewStyle, token]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -301,6 +329,31 @@ export default function MapVisualizer({ selectedRoute, token }: MapVisualizerPro
 
       {token && (
         <div className="absolute right-3 top-3 z-20 flex flex-col gap-2 sm:right-4 sm:top-4 sm:flex-row">
+          <div className="flex items-center rounded-2xl border border-white/10 bg-[#11181D]/85 p-1 shadow-2xl backdrop-blur-xl">
+            <button
+              type="button"
+              onClick={() => setMapViewStyle("standard")}
+              className={`rounded-xl px-3 py-2 text-xs font-semibold transition sm:text-sm ${
+                mapViewStyle === "standard"
+                  ? "bg-white/15 text-white"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              Padrao
+            </button>
+            <button
+              type="button"
+              onClick={() => setMapViewStyle("satellite")}
+              className={`rounded-xl px-3 py-2 text-xs font-semibold transition sm:text-sm ${
+                mapViewStyle === "satellite"
+                  ? "bg-white/15 text-white"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              Satelite
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={() => setIs3D((value) => !value)}

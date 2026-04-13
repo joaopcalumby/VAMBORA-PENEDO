@@ -232,6 +232,26 @@ body {
     will-change: transform, opacity, filter;
 }
 
+.dashboard-horizontal-scroll {
+    scrollbar-width: auto;
+    scrollbar-color: #c2c8c4 transparent;
+}
+
+.dashboard-horizontal-scroll::-webkit-scrollbar {
+    height: 10px;
+}
+
+.dashboard-horizontal-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dashboard-horizontal-scroll::-webkit-scrollbar-thumb {
+    background: #c2c8c4;
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
 @keyframes routeIn {
     from {
         opacity: 0;

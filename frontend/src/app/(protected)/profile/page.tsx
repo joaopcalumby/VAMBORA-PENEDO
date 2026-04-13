@@ -6,8 +6,7 @@ import {
   MapPin, 
   Shield, 
   Settings, 
-  HelpCircle, 
-  LogOut 
+  HelpCircle
 } from "lucide-react";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 

@@ -1,9 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { ChevronLeft, Map as MapIcon, Bus, Ship } from "lucide-react";
+import { ChevronLeft, Map as MapIcon, Bus, Ship, Star } from "lucide-react";
 import Link from "next/link";
+import {
+  addRecentRoute,
+  isRouteFavorite,
+  toggleFavoriteRoute,
+  type StoredRouteCard,
+} from "@/components/cards/route-storage";
 
 type RouteData = {
   id: number;
@@ -69,16 +75,47 @@ export default function RotasPage() {
   const [selectedRoute, setSelectedRoute] = useState<RouteData | null>(null);
   const [category, setCategory] = useState<RouteCategory>("municipais");
   const [isMinimized, setIsMinimized] = useState(false);
+  const [favoriteRouteIds, setFavoriteRouteIds] = useState<number[]>([]);
 
   const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
+
+  useEffect(() => {
+    const allRouteIds = Object.values(ROUTES_DATA)
+      .flatMap((group) => group)
+      .map((route) => route.id)
+      .filter((routeId) => isRouteFavorite(routeId));
+
+    setFavoriteRouteIds(allRouteIds);
+  }, []);
+
+  const toStoredCard = (route: RouteData): StoredRouteCard => ({
+    id: route.id,
+    category: category === "intermunicipais" ? "Intermunicipal" : category === "balsas" ? "Balsa" : "Linha",
+    title: route.name,
+    schedule: "Visualizacao no mapa",
+    href: "/rotas",
+  });
 
   const handleSelectRoute = (route: RouteData) => {
     setSelectedRoute(route);
     setIsMinimized(true);
+    addRecentRoute(toStoredCard(route));
+  };
+
+  const handleToggleFavorite = (route: RouteData) => {
+    const nowFavorited = toggleFavoriteRoute(toStoredCard(route));
+
+    setFavoriteRouteIds((current) => {
+      if (nowFavorited) {
+        return current.includes(route.id) ? current : [route.id, ...current];
+      }
+
+      return current.filter((routeId) => routeId !== route.id);
+    });
   };
 
   return (
-    <main className="relative h-screen w-full bg-[#0B0E14] overflow-hidden">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#0B0E14]">
       <div className="absolute left-4 top-4 z-[9999] sm:left-6 sm:top-6">
         <Link 
           href="/dashboard" 
@@ -96,8 +133,8 @@ export default function RotasPage() {
 
       {/* Painel Inferior (Bottom Sheet) */}
       <div 
-        className={`absolute bottom-0 w-full z-[9999] rounded-t-[28px] bg-white shadow-[0_-15px_50px_rgba(0,0,0,0.6)] transition-all duration-500 ease-in-out pb-[env(safe-area-inset-bottom)] sm:rounded-t-[40px]
-        ${isMinimized ? "h-20 sm:h-24" : "h-[52%] sm:h-[45%]"}`}
+        className={`absolute bottom-0 z-[9999] w-full rounded-t-[28px] bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-15px_50px_rgba(0,0,0,0.6)] transition-all duration-500 ease-in-out sm:rounded-t-[40px]
+        ${isMinimized ? "h-20 sm:h-24" : "h-[55svh] max-h-[78dvh] sm:h-[45%]"}`}
       >
         {/* Handle de Arrastar */}
         <div 
@@ -134,13 +171,21 @@ export default function RotasPage() {
             {/* Lista de Rotas */}
             <div className="flex-1 space-y-3 overflow-y-auto pb-36 pr-1 custom-scrollbar sm:pb-32">
               {ROUTES_DATA[category].map((route) => (
-                <button
+                <div
                   key={route.id}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => handleSelectRoute(route)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      handleSelectRoute(route);
+                    }
+                  }}
                   className={`flex w-full items-center justify-between rounded-[22px] border-2 p-4 transition-all active:scale-[0.97] sm:rounded-[24px] sm:p-5 ${
-                    selectedRoute?.id === route.id 
-                    ? "border-[#00FF94] bg-green-50/50" 
-                    : "border-gray-50 bg-gray-50/80"
+                    selectedRoute?.id === route.id
+                      ? "border-[#00FF94] bg-green-50/50"
+                      : "border-gray-50 bg-gray-50/80"
                   }`}
                 >
                   <div className="flex min-w-0 items-center gap-3 sm:gap-4">
@@ -149,8 +194,25 @@ export default function RotasPage() {
                     </div>
                     <span className="truncate text-sm font-extrabold text-slate-800 sm:text-base">{route.name}</span>
                   </div>
-                  <div className="h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: route.color }} />
-                </button>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleToggleFavorite(route);
+                      }}
+                      className="rounded-full p-1.5 text-slate-500 transition-colors hover:text-[#15b56d]"
+                      aria-label={favoriteRouteIds.includes(route.id) ? "Desfavoritar rota" : "Favoritar rota"}
+                    >
+                      <Star
+                        size={18}
+                        className={favoriteRouteIds.includes(route.id) ? "fill-[#20aa68] text-[#20aa68]" : "text-slate-400"}
+                      />
+                    </button>
+                    <div className="h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: route.color }} />
+                  </div>
+                </div>
               ))}
             </div>
           </div>

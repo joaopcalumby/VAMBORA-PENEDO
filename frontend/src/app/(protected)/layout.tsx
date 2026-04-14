@@ -7,7 +7,7 @@ export default function ProtectedLayout({
 }>) {
   return (
     <>
-      {children}
+      <div className="min-h-[100dvh] pb-24 sm:pb-28">{children}</div>
       <TabBar />
     </>
   );

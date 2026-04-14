@@ -15,8 +15,8 @@ export default function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-3 left-1/2 z-50 h-16 w-[calc(100%-1rem)] max-w-lg -translate-x-1/2 rounded-2xl border border-gray-200 bg-white shadow-lg">
-      <div className="grid h-full grid-cols-4 px-2 font-medium">
+    <nav className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 h-16 w-[calc(100%-0.75rem)] max-w-lg -translate-x-1/2 rounded-2xl border border-gray-200 bg-white shadow-lg sm:w-[calc(100%-1rem)]">
+      <div className="grid h-full grid-cols-4 px-1.5 font-medium sm:px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -25,13 +25,13 @@ export default function TabBar() {
             <Link
               key={item.name}
               href={item.href}
-              className="group inline-flex flex-col items-center justify-center rounded-xl px-5 hover:bg-gray-50"
+              className="group inline-flex flex-col items-center justify-center rounded-xl px-2 hover:bg-gray-50 sm:px-3"
             >
               <Icon
-                className={`mb-1 h-6 w-6 ${isActive ? "text-green-500" : "text-gray-500 group-hover:text-green-500"}`}
+                className={`mb-1 h-5 w-5 sm:h-6 sm:w-6 ${isActive ? "text-green-500" : "text-gray-500 group-hover:text-green-500"}`}
               />
               <span
-                className={`text-xs ${isActive ? "text-green-500" : "text-gray-500 group-hover:text-green-500"}`}
+                className={`text-[10px] sm:text-xs ${isActive ? "text-green-500" : "text-gray-500 group-hover:text-green-500"}`}
               >
                 {item.name}
               </span>

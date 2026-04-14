@@ -23,15 +23,15 @@ export default async function DashboardPage() {
   const initials = nameInitials || displayName.slice(0, 2).toUpperCase();
 
   return (
-    <main className="flex h-screen flex-col items-center justify-left gap-7 p-10 py-15">
-      <section className="flex flex-col gap-5">
-        <header className="flex">
-          <div className="app-bg-accent mr-4 flex h-13 w-13 items-center justify-center rounded-full text-white">
+    <main className="mx-auto flex min-h-[100dvh] w-full max-w-xl flex-col gap-6 px-3 pb-5 pt-4 sm:gap-7 sm:px-5 sm:pb-6 sm:pt-6 md:px-6 md:pt-8">
+      <section className="flex w-full flex-col gap-5 p-6">
+        <header className="flex items-center">
+          <div className="app-bg-accent mr-3 flex h-12 w-12 items-center justify-center rounded-full text-white sm:mr-4 sm:h-13 sm:w-13">
             <span className="font-bold text-black">{initials}</span>
           </div>
-          <div>
-            <p>Bem-vindo,</p>
-            <span>{displayName}</span>
+          <div className="min-w-0">
+            <p className="text-sm text-[#6f7a74]">Bem-vindo,</p>
+            <span className="block truncate text-base font-semibold text-[#111815]">{displayName}</span>
           </div>
         </header>
         <SearchBar />

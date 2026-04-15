@@ -1,9 +1,5 @@
-import os
-from datetime import datetime, timedelta, timezone
-
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from jose import jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel, Field
 from sqlalchemy import select
@@ -30,16 +26,13 @@ app.add_middleware(
 )
 
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
-JWT_ALGORITHM = "HS256"
-JWT_EXPIRES_HOURS = 12
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-me")
 
 
 class RegisterRequest(BaseModel):
     name: str = Field(min_length=1, max_length=120)
     city: str = Field(min_length=1, max_length=120)
     email: str = Field(min_length=3, max_length=255)
-    password: str = Field(min_length=6, max_length=25)
+    password: str = Field(min_length=8, max_length=128)
 
 
 class LoginRequest(BaseModel):
@@ -55,12 +48,6 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_access_token(email: str) -> str:
-    expires_at = datetime.now(timezone.utc) + timedelta(hours=JWT_EXPIRES_HOURS)
-    payload = {"sub": email, "exp": expires_at}
-    return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM)
-
-
 @app.on_event("startup")
 def startup():
     init_db()
@@ -74,13 +61,15 @@ def read_root():
 
 @app.post("/register", status_code=status.HTTP_201_CREATED)
 def register(payload: RegisterRequest, db: Session = Depends(get_db)):
-    if len(payload.password) > 25:
+    email = payload.email.strip().lower()
+
+    if len(payload.password) > 128:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="A senha deve ter no maximo 25 caracteres.",
+            detail="A senha deve ter no maximo 128 caracteres.",
         )
 
-    existing_user = db.scalar(select(User).where(User.email == payload.email))
+    existing_user = db.scalar(select(User).where(User.email == email))
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -88,7 +77,7 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         )
 
     user = User(
-        email=payload.email,
+        email=email,
         password=hash_password(payload.password),
         username=payload.name,
     )
@@ -107,17 +96,15 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 
 @app.post("/auth/login")
 def login(payload: LoginRequest, db: Session = Depends(get_db)):
-    user = db.scalar(select(User).where(User.email == payload.email))
+    email = payload.email.strip().lower()
+    user = db.scalar(select(User).where(User.email == email))
     if not user or not verify_password(payload.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="E-mail ou senha incorretos.",
         )
 
-    access_token = create_access_token(user.email)
     return {
-        "access_token": access_token,
-        "token_type": "bearer",
         "user": {
             "name": user.username,
             "email": user.email,

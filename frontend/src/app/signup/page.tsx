@@ -35,12 +35,12 @@ function SignupPage() {
         setSuccessMessage("");
 
         if (form.password.length < 6) {
-            setErrorMessage("A senha deve ter no minimo 6 caracteres.");
+            setErrorMessage("A senha deve ter no minimo 8 caracteres.");
             return;
         }
 
-        if (form.password.length > 25) {
-            setErrorMessage("A senha deve ter no maximo 25 caracteres.");
+        if (form.password.length > 128) {
+            setErrorMessage("A senha deve ter no maximo 128 caracteres.");
             return;
         }
 
@@ -183,7 +183,7 @@ function SignupPage() {
                             name="password"
                             placeholder="********"
                             className="app-input"
-                            maxLength={25}
+                            maxLength={128}
                             value={form.password}
                             onChange={(e) => handleChange("password", e.target.value)}
                             required

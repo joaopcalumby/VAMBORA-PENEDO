@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import SearchBar from "@/components/search/SearchBar";
 import RouteCards from "@/components/cards/RouteCards";
+import MobileHeroCarousel from "@/components/carousel/MobileHeroCarousel";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -36,6 +37,7 @@ export default async function DashboardPage() {
         </header>
         <SearchBar />
         <RouteCards />
+        <MobileHeroCarousel />
       </section>
     </main>
   );

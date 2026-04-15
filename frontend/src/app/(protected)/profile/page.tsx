@@ -1,5 +1,6 @@
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { 
   Star, 
@@ -60,7 +61,7 @@ export default async function ProfilePage() {
 
 
       <div className="w-full bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-400">
-        <MenuOption icon={<Star size={20} />} label="Rotas Favoritas" />
+        <MenuOption icon={<Star size={20} />} label="Rotas Favoritas" href="/rotas/favoritas?from=profile" />
         <MenuOption icon={<MapPin size={20} />} label="Histórico de Viagens" />
         <MenuOption icon={<Shield size={20} />} label="Privacidade" />
         <MenuOption icon={<Settings size={20} />} label="Configurações" />
@@ -75,11 +76,27 @@ export default async function ProfilePage() {
 }
 
 // Subcomponente para as linhas do menu
-function MenuOption({ icon, label, last = false }: { icon: React.ReactNode, label: string, last?: boolean }) {
-  return (
-    <div className={`flex items-center gap-4 p-4 hover:bg-gray-100 cursor-pointer transition-colors ${!last ? 'border-b border-gray-400' : ''}`}>
+function MenuOption({ icon, label, href, last = false }: { icon: React.ReactNode, label: string, href?: string, last?: boolean }) {
+  const content = (
+    <>
       <span className="text-[#00FF94]">{icon}</span>
       <span className="text-sm font-medium text-slate-700">{label}</span>
+    </>
+  );
+
+  const baseClassName = `flex items-center gap-4 p-4 hover:bg-gray-100 cursor-pointer transition-colors ${!last ? 'border-b border-gray-400' : ''}`;
+
+  if (href) {
+    return (
+      <Link href={href} className={baseClassName}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={baseClassName}>
+      {content}
     </div>
   );
 }

@@ -40,7 +40,6 @@ export const authOptions: NextAuthOptions = {
           id: String(credentials.email),
           name: data.user?.name ? String(data.user.name) : null,
           email: data.user?.email ? String(data.user.email) : String(credentials.email),
-          accessToken: data.access_token || data.token || null,
         };
       },
     }),
@@ -50,7 +49,6 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.name = user.name;
         token.email = user.email;
-        token.accessToken = (user as { accessToken?: string | null }).accessToken || null;
       }
 
       return token;
@@ -60,7 +58,6 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name ?? null;
         session.user.email = token.email ?? null;
       }
-      session.accessToken = (token.accessToken as string | null) || null;
       return session;
     },
   },

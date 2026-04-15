@@ -1,4 +1,5 @@
 @import "mapbox-gl/dist/mapbox-gl.css";
+@import "@splidejs/react-splide/css";
 @import "tailwindcss";
 
 :root {
@@ -276,4 +277,22 @@ body {
     .loader-spinner-fill {
         animation: none;
     }
+}
+
+.mobile-carousel .splide__pagination {
+    bottom: -1.15rem;
+}
+
+.mobile-carousel .splide__pagination__page {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin: 0 0.25rem;
+    background: #c6d0cb;
+    opacity: 1;
+    transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.mobile-carousel .splide__pagination__page.is-active {
+    background: var(--accent);
+    transform: scale(1.18);
 }

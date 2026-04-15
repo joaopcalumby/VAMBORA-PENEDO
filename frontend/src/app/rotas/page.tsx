@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { ChevronLeft, Map as MapIcon, Bus, Ship, Star } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import {
   addRecentRoute,
   isRouteFavorite,
@@ -75,18 +76,25 @@ export default function RotasPage() {
   const [selectedRoute, setSelectedRoute] = useState<RouteData | null>(null);
   const [category, setCategory] = useState<RouteCategory>("municipais");
   const [isMinimized, setIsMinimized] = useState(false);
-  const [favoriteRouteIds, setFavoriteRouteIds] = useState<number[]>([]);
+  const { data: session, status } = useSession();
 
-  const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
+  const userKey = session?.user?.email ?? null;
+  const [favoriteRouteIdsOverride, setFavoriteRouteIdsOverride] = useState<number[] | null>(null);
 
-  useEffect(() => {
-    const allRouteIds = Object.values(ROUTES_DATA)
+  const favoriteRouteIds = useMemo(() => {
+    if (status === "loading") {
+      return [];
+    }
+
+    return Object.values(ROUTES_DATA)
       .flatMap((group) => group)
       .map((route) => route.id)
-      .filter((routeId) => isRouteFavorite(routeId));
+      .filter((routeId) => isRouteFavorite(routeId, userKey));
+  }, [status, userKey]);
 
-    setFavoriteRouteIds(allRouteIds);
-  }, []);
+  const currentFavoriteRouteIds = favoriteRouteIdsOverride ?? favoriteRouteIds;
+
+  const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
 
   const toStoredCard = (route: RouteData): StoredRouteCard => ({
     id: route.id,
@@ -99,18 +107,20 @@ export default function RotasPage() {
   const handleSelectRoute = (route: RouteData) => {
     setSelectedRoute(route);
     setIsMinimized(true);
-    addRecentRoute(toStoredCard(route));
+    addRecentRoute(toStoredCard(route), userKey);
   };
 
   const handleToggleFavorite = (route: RouteData) => {
-    const nowFavorited = toggleFavoriteRoute(toStoredCard(route));
+    const nowFavorited = toggleFavoriteRoute(toStoredCard(route), userKey);
 
-    setFavoriteRouteIds((current) => {
+    setFavoriteRouteIdsOverride((current) => {
+      const baseIds = current ?? favoriteRouteIds;
+
       if (nowFavorited) {
-        return current.includes(route.id) ? current : [route.id, ...current];
+        return baseIds.includes(route.id) ? baseIds : [route.id, ...baseIds];
       }
 
-      return current.filter((routeId) => routeId !== route.id);
+      return baseIds.filter((routeId) => routeId !== route.id);
     });
   };
 
@@ -203,11 +213,11 @@ export default function RotasPage() {
                         handleToggleFavorite(route);
                       }}
                       className="rounded-full p-1.5 text-slate-500 transition-colors hover:text-[#15b56d]"
-                      aria-label={favoriteRouteIds.includes(route.id) ? "Desfavoritar rota" : "Favoritar rota"}
+                      aria-label={currentFavoriteRouteIds.includes(route.id) ? "Desfavoritar rota" : "Favoritar rota"}
                     >
                       <Star
                         size={18}
-                        className={favoriteRouteIds.includes(route.id) ? "fill-[#20aa68] text-[#20aa68]" : "text-slate-400"}
+                        className={currentFavoriteRouteIds.includes(route.id) ? "fill-[#20aa68] text-[#20aa68]" : "text-slate-400"}
                       />
                     </button>
                     <div className="h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: route.color }} />

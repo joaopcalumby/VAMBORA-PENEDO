@@ -34,7 +34,7 @@ function SignupPage() {
         setErrorMessage("");
         setSuccessMessage("");
 
-        if (form.password.length < 6) {
+        if (form.password.length < 8) {
             setErrorMessage("A senha deve ter no minimo 8 caracteres.");
             return;
         }
@@ -72,6 +72,18 @@ function SignupPage() {
             });
 
             if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+
+                if (response.status === 422) {
+                    setErrorMessage("Verifique os campos: nome, cidade, e-mail e senha (minimo 8 caracteres).");
+                    return;
+                }
+
+                if (payload?.detail && typeof payload.detail === "string") {
+                    setErrorMessage(payload.detail);
+                    return;
+                }
+
                 setErrorMessage("Nao foi possivel concluir o cadastro.");
                 return;
             }

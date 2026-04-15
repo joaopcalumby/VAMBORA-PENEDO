@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ChevronLeft, Clock3, Star } from "lucide-react";
@@ -47,7 +47,7 @@ function FavoriteRouteItem({ route }: { route: StoredRouteCard }) {
   );
 }
 
-export default function FavoriteRoutesPage() {
+function FavoriteRoutesContent() {
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const userKey = session?.user?.email ?? null;
@@ -99,5 +99,34 @@ export default function FavoriteRoutesPage() {
         )}
       </section>
     </main>
+  );
+}
+
+function FavoriteRoutesFallback() {
+  return (
+    <main className="mx-auto flex min-h-[100dvh] w-full max-w-xl flex-col gap-6 px-6 pb-10 pt-10 sm:px-5 sm:pt-6 md:px-6 md:pt-8">
+      <div className="flex items-center justify-between gap-3">
+        <div className="h-10 w-24 animate-pulse rounded-2xl bg-[#e4e9e5]" />
+      </div>
+
+      <section className="space-y-3">
+        <div>
+          <h1 className="text-2xl font-extrabold text-[#111815]">Rotas Favoritas</h1>
+          <p className="mt-1 text-sm text-[#6f7a74]">Carregando suas rotas favoritas...</p>
+        </div>
+
+        <section className="rounded-[1.1rem] border border-[#d2d8d3] bg-white p-5 text-[#111815]">
+          <p className="text-sm text-[#6f7a74]">Aguarde um instante.</p>
+        </section>
+      </section>
+    </main>
+  );
+}
+
+export default function FavoriteRoutesPage() {
+  return (
+    <Suspense fallback={<FavoriteRoutesFallback />}>
+      <FavoriteRoutesContent />
+    </Suspense>
   );
 }

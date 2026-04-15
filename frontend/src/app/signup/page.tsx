@@ -52,15 +52,7 @@ function SignupPage() {
         setIsLoading(true);
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-            if (!apiUrl) {
-                setErrorMessage("URL da API nao configurada no ambiente.");
-                return;
-            }
-
-            const cleanApiUrl = apiUrl.replace(/\/$/, "");
-            const response = await fetch(`${cleanApiUrl}/register`, {
+            const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

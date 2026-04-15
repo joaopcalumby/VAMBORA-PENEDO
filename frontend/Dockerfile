@@ -7,6 +7,10 @@ RUN npm ci
 # Estágio de construção
 FROM node:22-alpine as builder
 WORKDIR /app
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=${NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build 

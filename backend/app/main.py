@@ -1,3 +1,5 @@
+import os
+
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from passlib.context import CryptContext
@@ -10,16 +12,25 @@ from app.models import User
 
 app = FastAPI(title="Vambora Penedo")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+
+def get_cors_origins() -> list[str]:
+    configured_origins = os.getenv("BACKEND_CORS_ORIGINS", "")
+
+    if configured_origins.strip():
+        return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
+
+    return [
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:3002",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "http://127.0.0.1:3002",
-    ],
+    ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=get_cors_origins(),
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],

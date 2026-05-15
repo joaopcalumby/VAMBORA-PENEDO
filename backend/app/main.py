@@ -6,6 +6,8 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
+from typing import List, Optional
+from datetime import time as dt_time
 
 from app.database import get_db, init_db
 from app.models import Alerta, AlertaProximidade, Favorite, Feedback, Horario, Linha, User, Viagem

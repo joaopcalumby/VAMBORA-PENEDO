@@ -10,7 +10,7 @@ O Docker cria "caixas isoladas" (containers) para o banco de dados, o backend e 
 
 1. Baixe e instale o **Docker Desktop** (https://www.docker.com/products/docker-desktop/).
 2. Abra o Docker Desktop e deixe-o rodando minimizado.
-3. Tenha certeza de que criou uma cópia do arquivo `.env.example` renomeada para `.env` na pasta raiz do projeto. Cole lá a chave `SECRET_KEY` confidencial do time.
+3. Tenha certeza de que criou uma cópia do arquivo `.env.example` renomeada para `.env` na pasta raiz do projeto e preencha as URLs públicas do deploy.
 
 ## Como rodar tudo com apenas UM COMANDO 🔥
 
@@ -34,3 +34,16 @@ Caso precise trabalhar apenas no Frontend local e deixar só a API no Docker:
 - `docker-compose up backend --build` (Sobe apenas o servidor Python).
 
 Caso queira saber mais ou tirar dúvidas, peça socorro no chat da equipe! 🚀
+
+## Easy Panel
+
+Para publicar via Easy Panel com `docker-compose`, use este fluxo:
+
+1. Crie dois serviços a partir do mesmo compose: `backend` e `frontend`.
+2. No backend, defina `BACKEND_CORS_ORIGINS` com a URL pública do frontend.
+3. No frontend, defina `NEXT_PUBLIC_API_URL` com a URL pública do backend.
+4. Defina `NEXTAUTH_URL` com a URL pública do frontend e `NEXTAUTH_SECRET` com uma string forte.
+5. Defina `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` se a tela de mapa for usada.
+6. Mantenha o volume `backend_data` para persistir o SQLite se você não for migrar para PostgreSQL.
+
+Se estiver usando domínios separados, o frontend deve acessar a API pela URL pública do backend, não pelo nome interno do container.

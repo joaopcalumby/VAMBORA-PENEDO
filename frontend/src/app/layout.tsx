@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Kanit } from "next/font/google";
 import "./globals.css";
+import { SessionProvider } from "@/components/auth/SessionProvider";
 
 const kanit = Kanit({
   variable: "--font-kanit",
@@ -30,7 +31,7 @@ export default function RootLayout({
       className={`${kanit.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="app-page min-h-full flex flex-col font-sans">
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

@@ -34,13 +34,13 @@ function SignupPage() {
         setErrorMessage("");
         setSuccessMessage("");
 
-        if (form.password.length < 6) {
-            setErrorMessage("A senha deve ter no minimo 6 caracteres.");
+        if (form.password.length < 8) {
+            setErrorMessage("A senha deve ter no minimo 8 caracteres.");
             return;
         }
 
-        if (form.password.length > 25) {
-            setErrorMessage("A senha deve ter no maximo 25 caracteres.");
+        if (form.password.length > 128) {
+            setErrorMessage("A senha deve ter no maximo 128 caracteres.");
             return;
         }
 
@@ -52,15 +52,7 @@ function SignupPage() {
         setIsLoading(true);
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-            if (!apiUrl) {
-                setErrorMessage("URL da API nao configurada no ambiente.");
-                return;
-            }
-
-            const cleanApiUrl = apiUrl.replace(/\/$/, "");
-            const response = await fetch(`${cleanApiUrl}/register`, {
+            const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -72,6 +64,18 @@ function SignupPage() {
             });
 
             if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+
+                if (response.status === 422) {
+                    setErrorMessage("Verifique os campos: nome, cidade, e-mail e senha (minimo 8 caracteres).");
+                    return;
+                }
+
+                if (payload?.detail && typeof payload.detail === "string") {
+                    setErrorMessage(payload.detail);
+                    return;
+                }
+
                 setErrorMessage("Nao foi possivel concluir o cadastro.");
                 return;
             }
@@ -183,7 +187,7 @@ function SignupPage() {
                             name="password"
                             placeholder="********"
                             className="app-input"
-                            maxLength={25}
+                            maxLength={128}
                             value={form.password}
                             onChange={(e) => handleChange("password", e.target.value)}
                             required

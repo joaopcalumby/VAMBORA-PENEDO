@@ -1,3 +1,5 @@
+@import "mapbox-gl/dist/mapbox-gl.css";
+@import "@splidejs/react-splide/css";
 @import "tailwindcss";
 
 :root {
@@ -16,6 +18,7 @@
 
 html {
     color-scheme: light;
+    min-height: 100%;
 }
 
 html[data-theme="dark"] {
@@ -33,11 +36,12 @@ html[data-theme="dark"] {
 }
 
 body {
-    min-height: 100%;
+    min-height: 100dvh;
     margin: 0;
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-kanit), sans-serif;
+    overflow-x: hidden;
 }
 
 ::selection {
@@ -231,6 +235,26 @@ body {
     will-change: transform, opacity, filter;
 }
 
+.dashboard-horizontal-scroll {
+    scrollbar-width: auto;
+    scrollbar-color: #c2c8c4 transparent;
+}
+
+.dashboard-horizontal-scroll::-webkit-scrollbar {
+    height: 10px;
+}
+
+.dashboard-horizontal-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dashboard-horizontal-scroll::-webkit-scrollbar-thumb {
+    background: #c2c8c4;
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
 @keyframes routeIn {
     from {
         opacity: 0;
@@ -253,4 +277,22 @@ body {
     .loader-spinner-fill {
         animation: none;
     }
+}
+
+.mobile-carousel .splide__pagination {
+    bottom: -1.15rem;
+}
+
+.mobile-carousel .splide__pagination__page {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin: 0 0.25rem;
+    background: #c6d0cb;
+    opacity: 1;
+    transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.mobile-carousel .splide__pagination__page.is-active {
+    background: var(--accent);
+    transform: scale(1.18);
 }

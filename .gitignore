@@ -1,8 +1,45 @@
+# ---- Variáveis de ambiente ----
 .env
-*.db
-__pycache__/
-.venv/
-*.pyc
-.vscode/
-.DS_Store
 .env.local
+.env.*.local
+
+# ---- Banco de dados ----
+*.db
+*.sqlite
+*.sqlite3
+
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Node / Next.js ----
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# ---- Uploads ----
+uploads/
+
+# ---- IDEs / Editores ----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ---- Sistema ----
+.DS_Store
+Thumbs.db
+
+# ---- Ferramentas locais (não versionar) ----
+.claude/
+openspec/

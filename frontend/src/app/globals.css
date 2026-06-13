@@ -1,5 +1,4 @@
 @import "mapbox-gl/dist/mapbox-gl.css";
-@import "@splidejs/react-splide/css";
 @import "tailwindcss";
 
 :root {

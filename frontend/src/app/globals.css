@@ -5,10 +5,28 @@
    (compatível com next-themes attribute="class"). */
 @custom-variant dark (&:is(.dark *));
 
-/* Mapeia variáveis CSS para o sistema de tokens do Tailwind v4.
-   Os tons deep-saffron serão introduzidos no próximo checkpoint
-   (design tokens). Aqui apenas a base neutra do shadcn/ui. */
+/* ----------------------------------------------------------------------
+   Paleta primária: deep-saffron (PRD §6.2)
+   Tom 500 é a cor base; demais tons servem hover, fundos e hierarquias.
+   ---------------------------------------------------------------------- */
+
 @theme inline {
+  /* Escala completa da paleta exposta como utilitários Tailwind
+     (bg-primary-50, text-primary-700, border-primary-500, etc.) */
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-primary-950: var(--primary-950);
+
+  /* Tokens semânticos do shadcn/ui (background, foreground, primary,
+     secondary, muted, accent, destructive, border, input, ring). */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -28,6 +46,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -36,47 +55,74 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+
+  /* deep-saffron (PRD §6.2) */
+  --primary-50: #fef4e6;
+  --primary-100: #fee9cd;
+  --primary-200: #fcd29c;
+  --primary-300: #fbbc6a;
+  --primary-400: #faa638;
+  --primary-500: #f99006;
+  --primary-600: #c77305;
+  --primary-700: #955604;
+  --primary-800: #633903;
+  --primary-900: #321d01;
+  --primary-950: #231401;
+
+  /* Neutros (PRD §6.4 — proposta inicial) */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+
+  /* Cor primária e foco usam o tom 500 da paleta */
+  --primary: var(--primary-500);
+  --primary-foreground: #ffffff;
+  --ring: var(--primary-500);
+
+  /* Secondary, muted, accent — superfícies neutras suaves */
+  --secondary: #f7f7f7;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f7f7f7;
+  --muted-foreground: #6b6b6b;
+  --accent: var(--primary-50);
+  --accent-foreground: var(--primary-700);
+
+  --destructive: #d93b3b;
+  --destructive-foreground: #ffffff;
+
+  --border: #e5e5e5;
+  --input: #e5e5e5;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
+  /* Neutros invertidos */
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+
+  /* No escuro o tom 400 é mais legível que o 500 */
+  --primary: var(--primary-400);
+  --primary-foreground: #1a1a1a;
+  --ring: var(--primary-400);
+
+  --secondary: #1f1f1f;
+  --secondary-foreground: #fafafa;
+  --muted: #1f1f1f;
+  --muted-foreground: #a3a3a3;
+  --accent: var(--primary-900);
+  --accent-foreground: var(--primary-200);
+
+  --destructive: #d93b3b;
+  --destructive-foreground: #fafafa;
+
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
 }
 
 @layer base {

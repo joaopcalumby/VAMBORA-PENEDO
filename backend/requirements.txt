@@ -19,5 +19,8 @@ python-multipart==0.0.6
 # Cliente HTTP
 httpx==0.25.2
 
-# Suporte a .env 
+# Suporte a .env
 python-dotenv==1.0.0
+
+# Parsing de YAML (seed inicial: horários, categorias, usuários)
+PyYAML==6.0.1

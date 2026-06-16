@@ -1,21 +1,25 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
+from app.models import table_registry
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 
-from app.core.config import get_settings
+# Base path of the overall project ROOT
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+env_path = BASE_DIR / ".env"
+load_dotenv(dotenv_path=env_path)
 
-_settings = get_settings()
-
-_is_sqlite = _settings.database_url.startswith("sqlite")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./vambora.db")
 
 engine = create_engine(
-    _settings.database_url,
-    connect_args={"check_same_thread": False} if _is_sqlite else {},
-    poolclass=StaticPool if _is_sqlite else None,
+    DATABASE_URL,
+    connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {},
+    poolclass=StaticPool if "sqlite" in DATABASE_URL else None,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 
 def get_db():
     db = SessionLocal()
@@ -24,8 +28,5 @@ def get_db():
     finally:
         db.close()
 
-
-def init_db() -> None:
-    from app.models.base import Base
-    from app import models  
-    Base.metadata.create_all(bind=engine)
+def init_db():
+    table_registry.metadata.create_all(bind=engine)

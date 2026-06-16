@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.database import init_db
 from app.routers import auth as auth_router
+from app.routers import linhas as linhas_router
+from app.routers import pontos as pontos_router
 
 settings = get_settings()
 
@@ -49,6 +51,8 @@ def health() -> dict[str, str]:
 
 
 app.include_router(auth_router.router)
+app.include_router(linhas_router.router)
+app.include_router(pontos_router.router)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.database import init_db
+from app.routers import auth as auth_router
 
 settings = get_settings()
 
@@ -45,6 +46,9 @@ def root() -> dict[str, str]:
 @app.get("/health", tags=["health"])
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+app.include_router(auth_router.router)
 
 
 if __name__ == "__main__":

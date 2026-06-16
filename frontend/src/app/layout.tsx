@@ -27,10 +27,10 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      suppressHydrationWarning
+      data-theme="light"
       className={`${kanit.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
+      <body className="app-page min-h-full flex flex-col font-sans">
         <SessionProvider>{children}</SessionProvider>
       </body>
     </html>

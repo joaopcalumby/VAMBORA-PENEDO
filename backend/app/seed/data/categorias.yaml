@@ -1,0 +1,28 @@
+# Categorias tarifárias (PRD §RF10).
+#
+# slug é o identificador estável (não muda); name é o rótulo exibido.
+# requires_document marca categorias com desconto que exigem upload
+# de comprovante (validação manual pelo admin).
+#
+# is_default marca a categoria que vira default para usuários novos
+# e o fallback para quem tem solicitação ainda pendente (RF10.3).
+
+- slug: padrao
+  name: Padrão
+  requires_document: false
+  is_default: true
+
+- slug: estudante
+  name: Estudante
+  requires_document: true
+  is_default: false
+
+- slug: idoso
+  name: Idoso
+  requires_document: true
+  is_default: false
+
+- slug: sindicato
+  name: Sindicato
+  requires_document: true
+  is_default: false

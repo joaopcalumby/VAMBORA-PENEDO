@@ -1,0 +1,42 @@
+# Horários de partida por linha (PRD §RF1.2).
+#
+# Cada chave de primeiro nível é o NÚMERO da linha (string, como aparece
+# nas properties dos arquivos GeoJSON: "01", "02", "BAL"...).
+#
+# Para cada linha, três listas por tipo de dia:
+#   weekday         — dias úteis
+#   saturday        — sábados
+#   sunday_holiday  — domingos e feriados
+#
+# Horários em formato "HH:MM" 24h. Lista vazia significa "não opera nesse dia".
+#
+# ATENÇÃO: estes dados são PLACEHOLDER até a equipe consolidar a tabela
+# oficial. Editar diretamente este arquivo e rodar `python -m app.seed`
+# de novo — o seed é idempotente.
+
+"01":
+  weekday:
+    - "05:30"
+    - "06:00"
+    - "06:30"
+    - "07:00"
+    - "07:30"
+    - "08:00"
+    - "12:00"
+    - "12:30"
+    - "13:00"
+    - "17:00"
+    - "17:30"
+    - "18:00"
+    - "18:30"
+  saturday:
+    - "06:00"
+    - "07:00"
+    - "08:00"
+    - "12:00"
+    - "17:00"
+    - "18:00"
+  sunday_holiday:
+    - "07:00"
+    - "09:00"
+    - "17:00"

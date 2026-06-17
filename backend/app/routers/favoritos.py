@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -82,7 +82,7 @@ def create_favorite(
     return _serialize(favorite)
 
 
-@router.delete("/{favorite_id}", status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+@router.delete("/{favorite_id}", status_code=status.HTTP_204_NO_CONTENT, response_model=None)
 def delete_favorite(favorite_id: int, token: TokenPayload, db: DbDep) -> None:
     user_id = int(token["sub"])
     favorite = db.get(Favorite, favorite_id)

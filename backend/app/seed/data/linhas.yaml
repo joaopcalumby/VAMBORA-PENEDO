@@ -7,22 +7,46 @@
 # default_price:   tarifa padrão (categoria "padrao"), em reais
 # category_prices: tarifas específicas por categoria; ausente = usa default
 #
-# ATENÇÃO: tarifas são PLACEHOLDER até a equipe consolidar valores reais.
+# Valores reais consolidados pela equipe para o MVP.
 
 "01":
   name: "Centro Histórico – Conjunto Vale do São Francisco"
   modal: bus
-  default_price: 5.00
+  default_price: 3.50
   category_prices:
-    estudante: 2.50
-    idoso: 0.00
-    sindicato: 4.00
+    estudante: 1.75
+    idoso: 1.75
+    sindicato: 1.75
 
 "2":
   name: "Linha 02 — Bairro adicional"
   modal: bus
+  default_price: 3.50
+  category_prices:
+    estudante: 1.75
+    idoso: 1.75
+    sindicato: 1.75
+
+"3":
+  name: "Linha 03 — Bairro adicional"
+  modal: bus
+  default_price: 3.50
+  category_prices:
+    estudante: 1.75
+    idoso: 1.75
+    sindicato: 1.75
+
+"VAN":
+  name: "Van Penedo – Piaçabuçu"
+  modal: van
+  default_price: 12.00
+  # Sem desconto por carteirinha — preço único.
+
+"BAL":
+  name: "Balsa Penedo – Neópolis"
+  modal: ferry
   default_price: 5.00
   category_prices:
-    estudante: 2.50
-    idoso: 0.00
-    sindicato: 4.00
+    # Tarifas por tipo de veículo:
+    moto: 10.00
+    carro: 40.00

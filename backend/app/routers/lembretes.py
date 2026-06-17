@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -83,7 +83,7 @@ def update_reminder(
     return _serialize(reminder)
 
 
-@router.delete("/{reminder_id}", status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+@router.delete("/{reminder_id}", status_code=status.HTTP_204_NO_CONTENT, response_model=None)
 def delete_reminder(reminder_id: int, token: TokenPayload, db: DbDep) -> None:
     user_id = int(token["sub"])
     reminder = db.get(Reminder, reminder_id)

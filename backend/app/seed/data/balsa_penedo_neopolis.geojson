@@ -6,6 +6,8 @@
       "id": 0,
       "properties": {
         "nome": "Porto das Balsas - Penedo",
+        "linha": "BAL",
+        "tipo": "ponto_parada",
         "categoria": "ponto_embarque",
         "modal": "balsa"
       },
@@ -19,6 +21,8 @@
       "id": 1,
       "properties": {
         "nome": "Porto das Balsas - Neópolis",
+        "linha": "BAL",
+        "tipo": "ponto_parada",
         "categoria": "ponto_embarque",
         "modal": "balsa"
       },
@@ -32,6 +36,8 @@
       "id": 2,
       "properties": {
         "nome": "Travessia Penedo / Neópolis",
+        "linha": "BAL",
+        "tipo": "rota",
         "categoria": "rota",
         "modal": "balsa",
         "origem": "Penedo",

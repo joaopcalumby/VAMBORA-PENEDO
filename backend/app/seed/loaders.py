@@ -244,10 +244,15 @@ def _find_stop(db: Session, name: str, lat: float, lng: float) -> Stop | None:
 
 
 def seed_geojsons(db: Session, linhas: dict[str, Line]) -> None:
-    geojson_paths = sorted(DATA_DIR.glob("linha_*.geojson"))
+    # Carrega GeoJSONs de todas as modalidades: ônibus, van e balsa.
+    geojson_paths = sorted(
+        list(DATA_DIR.glob("linha_*.geojson"))
+        + list(DATA_DIR.glob("van_*.geojson"))
+        + list(DATA_DIR.glob("balsa_*.geojson"))
+    )
 
     if not geojson_paths:
-        print("  (nenhum arquivo linha_*.geojson encontrado em data/)")
+        print("  (nenhum arquivo geojson encontrado em data/)")
         return
 
     for path in geojson_paths:
@@ -257,17 +262,24 @@ def seed_geojsons(db: Session, linhas: dict[str, Line]) -> None:
         # Descobrir linha a partir da primeira Feature com properties.linha.
         line_number: str | None = None
         for feat in data.get("features", []):
-            line_number = feat.get("properties", {}).get("linha")
-            if line_number is not None:
+            ln = feat.get("properties", {}).get("linha")
+            if ln is not None:
+                line_number = str(ln)
                 break
 
         if line_number is None:
             # Tenta inferir o número da linha pelo nome do arquivo:
             # linha_NN_modal.geojson -> NN
+            # van_destino.geojson   -> VAN
+            # balsa_destino.geojson -> BAL
             stem = path.stem
             parts = stem.split("_")
             if len(parts) >= 2 and parts[0] == "linha":
                 line_number = parts[1].lstrip("0") or "0"
+            elif parts[0] == "van":
+                line_number = "VAN"
+            elif parts[0] == "balsa":
+                line_number = "BAL"
             else:
                 print(f"     (pulando {path.name}: sem properties.linha)")
                 continue

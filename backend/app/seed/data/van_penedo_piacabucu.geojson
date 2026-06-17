@@ -3,18 +3,30 @@
   "features": [
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {
+        "nome": "Terminal de Vans - Penedo",
+        "linha": "VAN",
+        "modal": "van",
+        "tipo": "ponto_parada"
+      },
       "geometry": { "type": "Point", "coordinates": [-36.5812431, -10.2869765] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {
+        "nome": "Terminal de Vans - Piaçabuçu",
+        "linha": "VAN",
+        "modal": "van",
+        "tipo": "ponto_parada"
+      },
       "geometry": { "type": "Point", "coordinates": [-36.431821, -10.405656] }
     },
     {
       "type": "Feature",
       "properties": {
-        "tipo": "van",
+        "linha": "VAN",
+        "tipo": "rota",
+        "modal": "van",
         "origem": "Penedo",
         "destino": "Piaçabuçu",
         "descricao": "Rota da van entre Penedo e Piaçabuçu"

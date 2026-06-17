@@ -26,3 +26,20 @@
   name: Sindicato
   requires_document: true
   is_default: false
+
+# ---------- Categorias de veículo (usadas pela balsa) ----------
+
+- slug: pessoa
+  name: Pessoa (pedestre)
+  requires_document: false
+  is_default: false
+
+- slug: moto
+  name: Moto
+  requires_document: false
+  is_default: false
+
+- slug: carro
+  name: Carro
+  requires_document: false
+  is_default: false

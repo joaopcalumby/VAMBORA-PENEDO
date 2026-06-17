@@ -1,0 +1,16 @@
+from __future__ import annotations
+
+from pydantic import BaseModel, Field
+
+
+class UpdatePhoneRequest(BaseModel):
+    phone: str = Field(min_length=8, max_length=20)
+
+
+class UpdatePasswordRequest(BaseModel):
+    current_password: str = Field(min_length=1, max_length=128)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+class GenericOk(BaseModel):
+    ok: bool = True

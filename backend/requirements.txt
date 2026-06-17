@@ -1,6 +1,31 @@
-SQLAlchemy>=2.0.49
+# Web framework e servidor
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-python-dotenv==1.0.0
-python-jose==3.3.0
+
+# Banco de dados
+SQLAlchemy>=2.0.49
+
+# Validação e configuração
+pydantic-settings==2.1.0
+email-validator==2.1.0
+
+# Segurança (hash de senha + JWT)
+# bcrypt fixado em 4.0.1: versões mais novas (4.1+) quebram com passlib 1.7.4.
 passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+python-jose[cryptography]==3.3.0
+
+# Upload de arquivos
+python-multipart==0.0.6
+
+# Cliente HTTP
+httpx==0.25.2
+
+# Suporte a .env
+python-dotenv==1.0.0
+
+# Parsing de YAML (seed inicial: horários, categorias, usuários)
+PyYAML==6.0.1
+
+# Fuso horário
+tzdata

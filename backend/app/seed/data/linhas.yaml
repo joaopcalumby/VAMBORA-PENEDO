@@ -1,0 +1,28 @@
+# Metadados das linhas: nome, modal e preço padrão.
+#
+# A chave do dicionário é o NÚMERO da linha (string, como aparece nas
+# properties dos GeoJSONs em /seed/data/).
+#
+# modal:           bus | van | ferry
+# default_price:   tarifa padrão (categoria "padrao"), em reais
+# category_prices: tarifas específicas por categoria; ausente = usa default
+#
+# ATENÇÃO: tarifas são PLACEHOLDER até a equipe consolidar valores reais.
+
+"01":
+  name: "Centro Histórico – Conjunto Vale do São Francisco"
+  modal: bus
+  default_price: 5.00
+  category_prices:
+    estudante: 2.50
+    idoso: 0.00
+    sindicato: 4.00
+
+"2":
+  name: "Linha 02 — Bairro adicional"
+  modal: bus
+  default_price: 5.00
+  category_prices:
+    estudante: 2.50
+    idoso: 0.00
+    sindicato: 4.00

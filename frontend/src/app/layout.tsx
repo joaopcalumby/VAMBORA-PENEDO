@@ -1,37 +1,48 @@
-import type { Metadata } from "next";
-import { Geist_Mono, Kanit } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+
 import { SessionProvider } from "@/components/auth/SessionProvider";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const kanit = Kanit({
-  variable: "--font-kanit",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "VamBora - Penedo",
-  description: "VamBora Penedo é um aplicativo de turismo que oferece uma experiência imersiva e personalizada para os visitantes de Penedo, Alagoas. Com uma interface intuitiva e recursos inovadores, o aplicativo ajuda os usuários a explorar as belezas naturais, culturais e históricas da região, proporcionando uma jornada única e inesquecível.",
+  title: "Vambora Penedo",
+  description:
+    "Linhas, horários, rotas e pontos do transporte público de Penedo–AL num só lugar.",
+  applicationName: "Vambora Penedo",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f99006",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="pt-BR"
-      data-theme="light"
-      className={`${kanit.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${inter.variable} h-full antialiased`}
     >
-      <body className="app-page min-h-full flex flex-col font-sans">
-        <SessionProvider>{children}</SessionProvider>
+      <body className="min-h-dvh flex flex-col font-sans bg-background text-foreground">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProvider>{children}</SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -2,43 +2,47 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Map, User, Wallet } from "lucide-react";
+import { Home, Map, Wallet, User } from "lucide-react";
 
-const navItems = [
-  { name: "Home", href: "/dashboard", icon: Home },
-  { name: "Rotas", href: "/rotas", icon: Map },
-  {name: "Carteira", href: "/carteira", icon: Wallet },
-  { name: "Perfil", href: "/profile", icon: User },
-];
+import { cn } from "@/lib/utils";
 
-export default function TabBar() {
+const TABS = [
+  { href: "/inicio", label: "Início", icon: Home },
+  { href: "/mapa", label: "Mapa", icon: Map },
+  { href: "/carteira", label: "Carteira", icon: Wallet },
+  { href: "/perfil", label: "Perfil", icon: User },
+] as const;
+
+export function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 h-16 w-[calc(100%-0.75rem)] max-w-lg -translate-x-1/2 rounded-2xl border border-gray-200 bg-white shadow-lg sm:w-[calc(100%-1rem)]">
-      <div className="grid h-full grid-cols-4 px-1.5 font-medium sm:px-2">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href;
-          const Icon = item.icon;
-
+    <nav
+      aria-label="Navegação principal"
+      className="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-background pb-[env(safe-area-inset-bottom)]"
+    >
+      <ul className="mx-auto flex max-w-md justify-around">
+        {TABS.map(({ href, label, icon: Icon }) => {
+          const active = pathname?.startsWith(href) ?? false;
           return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="group inline-flex flex-col items-center justify-center rounded-xl px-2 hover:bg-gray-50 sm:px-3"
-            >
-              <Icon
-                className={`mb-1 h-5 w-5 sm:h-6 sm:w-6 ${isActive ? "text-green-500" : "text-gray-500 group-hover:text-green-500"}`}
-              />
-              <span
-                className={`text-[10px] sm:text-xs ${isActive ? "text-green-500" : "text-gray-500 group-hover:text-green-500"}`}
+            <li key={href} className="flex-1">
+              <Link
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "flex flex-col items-center gap-1 py-2 text-xs transition-colors min-h-[44px]",
+                  active
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                {item.name}
-              </span>
-            </Link>
+                <Icon className="h-5 w-5" aria-hidden />
+                <span>{label}</span>
+              </Link>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </nav>
   );
 }

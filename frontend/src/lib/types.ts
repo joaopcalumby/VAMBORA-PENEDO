@@ -84,3 +84,49 @@ export type PaymentConfirmResponse = {
   new_balance_cents: number;
   created_at: string;
 };
+
+// ---------------------------------------------------------------------------
+// Perfil / lembretes / categorias / feedback
+// ---------------------------------------------------------------------------
+
+export type MeResponse = {
+  id: number;
+  name: string;
+  email: string;
+  cpf: string | null;
+  birth_date: string | null;
+  phone: string | null;
+  role: string;
+  has_driver: boolean;
+  driver_status: string | null;
+  fare_category_slug: string | null;
+};
+
+export type ReminderResponse = {
+  id: number;
+  line_id: number;
+  stop_id: number;
+  anticipation_minutes: number;
+  active: boolean;
+  created_at: string;
+};
+
+export type CategoryResponse = {
+  id: number;
+  slug: string;
+  name: string;
+  requires_document: boolean;
+  is_default: boolean;
+};
+
+export type CategoryRequestResponse = {
+  id: number;
+  category_id: number;
+  category_slug: string;
+  category_name: string;
+  status: "pending" | "approved" | "rejected";
+  document_path: string | null;
+  justification: string | null;
+  created_at: string;
+  reviewed_at: string | null;
+};

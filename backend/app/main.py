@@ -6,6 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.database import init_db
 from app.routers import auth as auth_router
+from app.routers import favoritos as favoritos_router
+from app.routers import feedback as feedback_router
+from app.routers import lembretes as lembretes_router
 from app.routers import linhas as linhas_router
 from app.routers import pontos as pontos_router
 
@@ -53,6 +56,9 @@ def health() -> dict[str, str]:
 app.include_router(auth_router.router)
 app.include_router(linhas_router.router)
 app.include_router(pontos_router.router)
+app.include_router(favoritos_router.router)
+app.include_router(lembretes_router.router)
+app.include_router(feedback_router.router)
 
 
 if __name__ == "__main__":

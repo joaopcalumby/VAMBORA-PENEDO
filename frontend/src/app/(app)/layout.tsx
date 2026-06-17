@@ -1,3 +1,4 @@
+import { LembretesProvider } from "@/components/LembretesProvider";
 import { TabBar } from "@/components/navigation/TabBar";
 
 // Route group autenticado — telas de uso comum compartilham a TabBar
@@ -11,9 +12,11 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-dvh flex flex-col pb-16">
-      <main className="flex-1">{children}</main>
-      <TabBar />
-    </div>
+    <LembretesProvider>
+      <div className="min-h-dvh flex flex-col pb-16">
+        <main className="flex-1">{children}</main>
+        <TabBar />
+      </div>
+    </LembretesProvider>
   );
 }

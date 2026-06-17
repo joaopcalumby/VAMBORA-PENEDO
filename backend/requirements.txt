@@ -24,3 +24,6 @@ python-dotenv==1.0.0
 
 # Parsing de YAML (seed inicial: horários, categorias, usuários)
 PyYAML==6.0.1
+
+# Fuso horário
+tzdata

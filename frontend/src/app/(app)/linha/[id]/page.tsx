@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { ArrowLeft, Bell, Info, MapPin, Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ const ANTICIPATION_OPTIONS = [5, 10, 15] as const;
 export default function LinhaDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
+  const { status } = useSession();
   const lineId = Number(params.id);
   const callApi = useApi();
 
@@ -47,10 +49,14 @@ export default function LinhaDetailPage() {
     callApi<NextDeparture | null>(`/linhas/${lineId}/proximo`).then(setNext).catch(() => setNext(null));
     callApi<SchedulesByDay>(`/linhas/${lineId}/horarios`).then(setSchedules).catch(() => setSchedules(null));
     callApi<StopSummary[]>(`/pontos?line_id=${lineId}`).then(setStops).catch(() => setStops([]));
+  }, [callApi, lineId]);
+
+  useEffect(() => {
+    if (!Number.isFinite(lineId) || status !== "authenticated") return;
     callApi<FavoriteResponse[]>("/favoritos")
       .then((favs) => setFavorite(favs.find((f) => f.target_type === "line" && f.target_id === lineId) ?? null))
       .catch(() => setFavorite(null));
-  }, [callApi, lineId]);
+  }, [callApi, lineId, status]);
 
   async function toggleFavorite() {
     if (favorite) {

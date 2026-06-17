@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { ArrowDownCircle, ArrowLeft, ArrowUpCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -10,12 +11,14 @@ import { formatCents } from "@/lib/format";
 import type { TransactionResponse } from "@/lib/types";
 
 export default function AtividadePage() {
+  const { status } = useSession();
   const callApi = useApi();
   const [txs, setTxs] = useState<TransactionResponse[] | null>(null);
 
   useEffect(() => {
+    if (status !== "authenticated") return;
     callApi<TransactionResponse[]>("/perfil/atividade").then(setTxs).catch(() => setTxs([]));
-  }, [callApi]);
+  }, [callApi, status]);
 
   return (
     <div className="px-4 py-6 max-w-md mx-auto space-y-4">

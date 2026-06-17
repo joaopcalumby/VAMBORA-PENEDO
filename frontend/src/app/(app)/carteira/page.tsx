@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { ArrowDownCircle, ArrowUpCircle, QrCode, Plus, Wallet } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -11,14 +12,16 @@ import { formatCents } from "@/lib/format";
 import type { WalletResponse } from "@/lib/types";
 
 export default function CarteiraPage() {
+  const { status } = useSession();
   const callApi = useApi();
   const [wallet, setWallet] = useState<WalletResponse | null>(null);
 
   useEffect(() => {
+    if (status !== "authenticated") return;
     callApi<WalletResponse>("/carteira")
       .then(setWallet)
       .catch(() => setWallet({ balance_cents: 0, last_transactions: [] }));
-  }, [callApi]);
+  }, [callApi, status]);
 
   return (
     <div className="px-4 py-6 max-w-md mx-auto space-y-6">

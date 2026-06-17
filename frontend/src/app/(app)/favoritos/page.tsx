@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { ArrowLeft, Bus, Sailboat, Trash2, MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ type StopFavorite = FavoriteResponse & {
 };
 
 export default function FavoritosPage() {
+  const { status } = useSession();
   const callApi = useApi();
   const [favorites, setFavorites] = useState<FavoriteResponse[]>([]);
   const [lineFavs, setLineFavs] = useState<LineFavorite[]>([]);
@@ -33,11 +35,12 @@ export default function FavoritosPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (status !== "authenticated") return;
     callApi<FavoriteResponse[]>("/favoritos")
       .then(setFavorites)
       .catch(() => setFavorites([]))
       .finally(() => setLoading(false));
-  }, [callApi]);
+  }, [callApi, status]);
 
   useEffect(() => {
     const lineIds = favorites

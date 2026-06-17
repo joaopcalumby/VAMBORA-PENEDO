@@ -21,7 +21,7 @@ const ALLOWED = ["image/jpeg", "image/png", "application/pdf"];
 
 export default function CategoriaPage() {
   const callApi = useApi();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const [request, setRequest] = useState<CategoryRequestResponse | null>(null);
@@ -32,10 +32,14 @@ export default function CategoriaPage() {
 
   useEffect(() => {
     callApi<CategoryResponse[]>("/categorias").then(setCategories).catch(() => setCategories([]));
+  }, [callApi]);
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
     callApi<CategoryRequestResponse | null>("/categorias/minha-solicitacao")
       .then(setRequest)
       .catch(() => setRequest(null));
-  }, [callApi]);
+  }, [callApi, status]);
 
   const selectedCategory = categories.find((c) => c.slug === selected);
 

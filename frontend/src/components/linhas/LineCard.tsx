@@ -37,7 +37,7 @@ export function LineCard({ line }: { line: LineSummary }) {
               {line.number}
             </span>
           </div>
-          <p className="font-medium truncate">{line.name}</p>
+          <p className="font-medium truncate" title={line.name}>{line.name}</p>
         </div>
       </div>
       <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" aria-hidden />

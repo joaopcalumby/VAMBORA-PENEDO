@@ -262,15 +262,20 @@ def seed_geojsons(db: Session, linhas: dict[str, Line]) -> None:
                 break
 
         if line_number is None:
-            raise ValueError(
-                f"{path.name}: nenhuma Feature contém properties.linha."
-            )
+            # Tenta inferir o número da linha pelo nome do arquivo:
+            # linha_NN_modal.geojson -> NN
+            stem = path.stem
+            parts = stem.split("_")
+            if len(parts) >= 2 and parts[0] == "linha":
+                line_number = parts[1].lstrip("0") or "0"
+            else:
+                print(f"     (pulando {path.name}: sem properties.linha)")
+                continue
         line_number = str(line_number)
 
         if line_number not in linhas:
-            raise ValueError(
-                f"{path.name}: linha '{line_number}' não está em linhas.yaml."
-            )
+            print(f"     (pulando {path.name}: linha '{line_number}' nao esta em linhas.yaml)")
+            continue
         line = linhas[line_number]
 
         # Limpar Route+RoutePoints da linha (recria a partir do GeoJSON).

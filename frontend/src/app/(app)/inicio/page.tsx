@@ -8,11 +8,10 @@ import { Search, Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LineCard } from "@/components/linhas/LineCard";
 import { useApi } from "@/lib/hooks/useApi";
 import type { FavoriteResponse, LineSummary } from "@/lib/types";
-
-const FAVORITES_PREVIEW = 4;
 
 export default function InicioPage() {
   const router = useRouter();
@@ -35,7 +34,7 @@ export default function InicioPage() {
   }, [callApi, status]);
 
   const favoriteLines = favorites.filter((f) => f.target_type === "line");
-  const greeting = session?.user?.name?.split(" ")[0] ?? "olá";
+  const firstName = session?.user?.name?.split(" ")[0] ?? "";
 
   function submitSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -46,9 +45,10 @@ export default function InicioPage() {
 
   return (
     <div className="px-4 py-6 max-w-md mx-auto space-y-6">
-      <header className="space-y-1">
-        <p className="text-sm text-muted-foreground">Oi, {greeting}!</p>
-        <h1 className="text-2xl font-semibold">Pra onde vamos?</h1>
+      <header>
+        <h1 className="text-2xl font-semibold">
+          Oi{firstName ? `, ${firstName}` : ""}
+        </h1>
       </header>
 
       <form onSubmit={submitSearch} className="relative">
@@ -69,9 +69,19 @@ export default function InicioPage() {
 
       <section className="space-y-3">
         <h2 className="font-semibold">Todas as linhas</h2>
-        {lines === null && <p className="text-sm text-muted-foreground">Carregando...</p>}
+        {lines === null && (
+          <ul className="space-y-2" aria-busy="true">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <li key={i}>
+                <Skeleton className="h-16 w-full" />
+              </li>
+            ))}
+          </ul>
+        )}
         {lines && lines.length === 0 && (
-          <p className="text-sm text-muted-foreground">Nenhuma linha cadastrada.</p>
+          <p className="text-sm text-muted-foreground">
+            Nenhuma linha cadastrada.
+          </p>
         )}
         <ul className="space-y-2">
           {lines?.map((line) => (
@@ -123,7 +133,9 @@ function FavoritesBlock({
                 className="block rounded-lg border border-border bg-card p-3 hover:bg-accent/40 min-h-[44px]"
               >
                 <p className="text-xs text-muted-foreground">{line.number}</p>
-                <p className="text-sm font-medium truncate">{line.name}</p>
+                <p className="text-sm font-medium" title={line.name}>
+                  {line.name}
+                </p>
               </Link>
             </li>
           );

@@ -40,9 +40,8 @@ export default function LoginPage() {
 
   return (
     <div className="space-y-6">
-      <header className="space-y-2 text-center">
+      <header className="text-center">
         <h1 className="text-3xl font-semibold">Bem-vindo</h1>
-        <p className="text-muted-foreground text-sm">Entre para continuar.</p>
       </header>
 
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -72,7 +71,7 @@ export default function LoginPage() {
             <button
               type="button"
               aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute right-0 top-0 h-11 w-11 inline-flex items-center justify-center text-muted-foreground"
               onClick={() => setShowPassword((v) => !v)}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

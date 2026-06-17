@@ -1,22 +1,16 @@
 # Usuários iniciais para demonstração.
-#
 # A senha em texto plano vira hash bcrypt no seed.
-# email tem que ser único; cpf é opcional (mas único quando presente).
-#
-# Roles aceitas: user, driver, admin.
-# Para motoristas, informe driver_status (approved / pending / rejected)
-# e professional_id (identificador profissional declarado).
 
 admins:
   - name: "Equipe Vambora"
-    email: "admin@vamborapenedo.local"
+    email: "admin@vamborapenedo.com.br"
     password: "admin123"
     cpf: null
     phone: "(82) 99999-0000"
 
 drivers:
   - name: "Motorista Demonstração 1"
-    email: "motorista1@vamborapenedo.local"
+    email: "motorista1@vamborapenedo.com.br"
     password: "motorista123"
     cpf: null
     phone: "(82) 99999-0001"
@@ -24,7 +18,7 @@ drivers:
     status: approved
 
   - name: "Motorista Demonstração 2"
-    email: "motorista2@vamborapenedo.local"
+    email: "motorista2@vamborapenedo.com.br"
     password: "motorista123"
     cpf: null
     phone: "(82) 99999-0002"

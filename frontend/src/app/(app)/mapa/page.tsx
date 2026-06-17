@@ -16,7 +16,14 @@ import { StopSheet } from "@/components/map/StopSheet";
 // MapLibre toca window/document — carregamento dinâmico sem SSR.
 const MapView = dynamic(
   () => import("@/components/map/MapView").then((m) => m.MapView),
-  { ssr: false, loading: () => <div className="absolute inset-0 bg-muted" /> }
+  {
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 bg-muted flex items-center justify-center text-sm text-muted-foreground">
+        Carregando mapa...
+      </div>
+    ),
+  }
 );
 
 type RouteResponse = {

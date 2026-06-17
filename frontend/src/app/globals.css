@@ -1,4 +1,3 @@
-@import "mapbox-gl/dist/mapbox-gl.css";
 @import "tailwindcss";
 
 /* Habilita o modo escuro via classe "dark" no elemento raiz

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Bell, BellOff, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,10 +18,12 @@ type Enriched = ReminderResponse & {
 };
 
 export function RemindersList() {
+  const { status } = useSession();
   const callApi = useApi();
   const [reminders, setReminders] = useState<Enriched[]>([]);
 
   useEffect(() => {
+    if (status !== "authenticated") return;
     (async () => {
       let raw: ReminderResponse[] = [];
       try {
@@ -46,7 +49,7 @@ export function RemindersList() {
       );
       setReminders(enriched);
     })();
-  }, [callApi]);
+  }, [callApi, status]);
 
   async function toggle(id: number, active: boolean) {
     await callApi(`/lembretes/${id}`, { method: "PATCH", body: { active } });

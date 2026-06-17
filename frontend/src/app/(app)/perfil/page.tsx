@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { RemindersList } from "@/components/perfil/RemindersList";
 import { ThemeToggle } from "@/components/perfil/ThemeToggle";
 import { useApi } from "@/lib/hooks/useApi";
@@ -75,8 +76,17 @@ export default function PerfilPage() {
   return (
     <div className="px-4 py-6 max-w-md mx-auto space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-semibold">{me?.name ?? "Carregando..."}</h1>
-        <p className="text-sm text-muted-foreground">{me?.email}</p>
+        {me ? (
+          <>
+            <h1 className="text-2xl font-semibold">{me.name}</h1>
+            <p className="text-sm text-muted-foreground">{me.email}</p>
+          </>
+        ) : (
+          <>
+            <Skeleton className="h-7 w-40" />
+            <Skeleton className="h-4 w-56" />
+          </>
+        )}
       </header>
 
       <section className="space-y-3 rounded-lg border border-border bg-card p-4">
@@ -107,9 +117,11 @@ export default function PerfilPage() {
       <section className="space-y-3 rounded-lg border border-border bg-card p-4">
         <h2 className="text-sm font-semibold">Senha</h2>
         {!editingPassword ? (
-          <Button variant="outline" size="sm" onClick={() => setEditingPassword(true)}>
-            Alterar senha
-          </Button>
+          <div className="flex justify-end">
+            <Button variant="outline" size="sm" onClick={() => setEditingPassword(true)}>
+              Editar
+            </Button>
+          </div>
         ) : (
           <div className="space-y-2">
             <Label htmlFor="cur">Senha atual</Label>

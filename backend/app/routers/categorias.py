@@ -74,7 +74,7 @@ def list_categories(db: DbDep) -> list[CategoryResponse]:
 async def solicitar_categoria(
     token: TokenPayload,
     db: DbDep,
-    category_slug: Annotated[str, Form(min_length=1, max_length=32)],
+    category_slug: str = Form(..., min_length=1, max_length=32),
     document: UploadFile = File(...),
 ) -> CategoryRequestResponse:
     user_id = int(token["sub"])

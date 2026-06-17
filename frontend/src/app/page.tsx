@@ -27,6 +27,7 @@ export default function SplashPage() {
           width={120}
           height={120}
           priority
+          style={{ width: "auto", height: "auto" }}
         />
         <p className="text-primary-50 text-sm tracking-wide">Vambora Penedo</p>
       </div>

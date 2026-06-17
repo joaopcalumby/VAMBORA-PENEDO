@@ -1,5 +1,3 @@
-// Helpers de formatação reusáveis pelas telas.
-
 export function formatCents(cents: number): string {
   return (cents / 100).toLocaleString("pt-BR", {
     style: "currency",
@@ -9,7 +7,6 @@ export function formatCents(cents: number): string {
 
 export function formatTime(value: string | null | undefined): string {
   if (!value) return "—";
-  // Backend devolve "HH:MM:SS" no time; cortamos para HH:MM.
   return value.slice(0, 5);
 }
 

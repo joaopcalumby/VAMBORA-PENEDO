@@ -17,3 +17,12 @@
     estudante: 2.50
     idoso: 0.00
     sindicato: 4.00
+
+"2":
+  name: "Linha 02 — Bairro adicional"
+  modal: bus
+  default_price: 5.00
+  category_prices:
+    estudante: 2.50
+    idoso: 0.00
+    sindicato: 4.00

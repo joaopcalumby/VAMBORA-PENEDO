@@ -1,7 +1,3 @@
-// Cliente HTTP fino para o backend FastAPI.
-// Adiciona Authorization automaticamente quando token é passado.
-// Erros viram ApiError, com status e body do backend.
-
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export class ApiError extends Error {

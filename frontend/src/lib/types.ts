@@ -1,5 +1,3 @@
-// Tipos de resposta do backend usados nas telas do frontend.
-
 export type LineSummary = {
   id: number;
   number: string;
@@ -46,10 +44,6 @@ export type LineAtStop = {
 
 export type StopDetail = StopSummary & { lines: LineAtStop[] };
 
-// ---------------------------------------------------------------------------
-// Carteira / Pagamento
-// ---------------------------------------------------------------------------
-
 export type TransactionResponse = {
   id: number;
   type: "recharge" | "payment";
@@ -84,10 +78,6 @@ export type PaymentConfirmResponse = {
   new_balance_cents: number;
   created_at: string;
 };
-
-// ---------------------------------------------------------------------------
-// Perfil / lembretes / categorias / feedback
-// ---------------------------------------------------------------------------
 
 export type MeResponse = {
   id: number;

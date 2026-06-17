@@ -1,9 +1,3 @@
-// Persistência de "primeiro acesso" via localStorage.
-//
-// O middleware Next.js executa no servidor e NÃO tem acesso a
-// localStorage — por isso a decisão de mostrar onboarding fica
-// no cliente (tela Splash e useEffect dela).
-
 const KEY = "vambora.onboardingCompleted";
 
 export function isOnboardingCompleted(): boolean {

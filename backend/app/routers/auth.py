@@ -121,12 +121,11 @@ def register(payload: RegisterRequest, db: DbDep) -> TokenResponse:
 
     # Verifica e-mail + CPF para devolver erros específicos sem revelar
     # demais (msg igual para os dois conflitos).
-    conflict = db.scalar(
-        select(User).where(
-            (User.email == email)
-            | ((payload.cpf is not None) & (User.cpf == payload.cpf))
-        )
-    )
+    cond = User.email == email
+    if payload.cpf is not None:
+        cond = cond | (User.cpf == payload.cpf)
+
+    conflict = db.scalar(select(User).where(cond))
     if conflict is not None:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

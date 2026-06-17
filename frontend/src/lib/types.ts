@@ -45,3 +45,42 @@ export type LineAtStop = {
 };
 
 export type StopDetail = StopSummary & { lines: LineAtStop[] };
+
+// ---------------------------------------------------------------------------
+// Carteira / Pagamento
+// ---------------------------------------------------------------------------
+
+export type TransactionResponse = {
+  id: number;
+  type: "recharge" | "payment";
+  amount_cents: number;
+  line_id: number | null;
+  driver_user_id: number | null;
+  qrcode_id: number | null;
+  created_at: string;
+};
+
+export type WalletResponse = {
+  balance_cents: number;
+  last_transactions: TransactionResponse[];
+};
+
+export type PaymentPreviewResponse = {
+  qrcode_id: number;
+  driver_user_id: number;
+  driver_name: string;
+  line_id: number;
+  line_number: string;
+  line_name: string;
+  amount_cents: number;
+  user_category_slug: string;
+};
+
+export type PaymentConfirmResponse = {
+  transaction_id: number;
+  amount_cents: number;
+  line_number: string;
+  line_name: string;
+  new_balance_cents: number;
+  created_at: string;
+};

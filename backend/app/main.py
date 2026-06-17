@@ -13,6 +13,7 @@ from app.routers import feedback as feedback_router
 from app.routers import lembretes as lembretes_router
 from app.routers import linhas as linhas_router
 from app.routers import pagamento as pagamento_router
+from app.routers import perfil as perfil_router
 from app.routers import pontos as pontos_router
 
 settings = get_settings()
@@ -65,6 +66,7 @@ app.include_router(feedback_router.router)
 app.include_router(carteira_router.router)
 app.include_router(pagamento_router.router)
 app.include_router(categorias_router.router)
+app.include_router(perfil_router.router)
 
 
 if __name__ == "__main__":

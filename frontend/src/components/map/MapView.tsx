@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import maplibregl, { Map as MapLibreMap, Marker } from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import mapboxgl, { Map as MapboxMap, Marker } from "mapbox-gl";
+
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
 import {
   MODAL_BG,
@@ -38,24 +39,35 @@ export function MapView({
   onStopClick,
 }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<MapLibreMap | null>(null);
+  const mapRef = useRef<MapboxMap | null>(null);
   const stopMarkersRef = useRef<Map<number, Marker>>(new Map());
   const userMarkerRef = useRef<Marker | null>(null);
 
   // Bootstrap do mapa (uma vez).
   useEffect(() => {
+    window.onerror = function (msg, url, line) {
+      alert("Error: " + msg + "\nLine: " + line);
+    };
     if (!containerRef.current || mapRef.current) return;
 
-    const map = new maplibregl.Map({
+    console.log("Map container clientHeight:", containerRef.current.clientHeight, "clientWidth:", containerRef.current.clientWidth);
+
+    const map = new mapboxgl.Map({
       container: containerRef.current,
       style: TILE_STYLE,
       center: PENEDO_CENTER,
       zoom: PENEDO_INITIAL_ZOOM,
       attributionControl: { compact: true },
     });
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+    
+    console.log("Map instance created.", map);
+    map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "top-right");
 
     map.on("load", () => {
+      // Força a atualização do tamanho do canvas logo após o carregamento
+      // para evitar tela em branco.
+      map.resize();
+      
       // Camada de rotas (vazia até receber dados).
       map.addSource("routes", {
         type: "geojson",
@@ -111,7 +123,7 @@ export function MapView({
         onStopClick?.(stop);
       });
 
-      const marker = new maplibregl.Marker({ element: el })
+      const marker = new mapboxgl.Marker({ element: el })
         .setLngLat([stop.longitude, stop.latitude])
         .addTo(map);
       existing.set(stop.id, marker);
@@ -157,7 +169,7 @@ export function MapView({
     el.style.background = "#2563eb";
     el.style.border = "3px solid white";
     el.style.boxShadow = "0 0 0 4px rgba(37, 99, 235, 0.25)";
-    userMarkerRef.current = new maplibregl.Marker({ element: el })
+    userMarkerRef.current = new mapboxgl.Marker({ element: el })
       .setLngLat([userLocation[1], userLocation[0]])
       .addTo(map);
   }, [userLocation]);
@@ -166,11 +178,13 @@ export function MapView({
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    const source = map.getSource("routes") as maplibregl.GeoJSONSource | undefined;
+    const source = map.getSource("routes") as mapboxgl.GeoJSONSource | undefined;
     if (!source) return;
     source.setData({
       type: "FeatureCollection",
-      features: routes.map((r) => ({
+      features: routes
+        .filter((r) => r.points && r.points.length >= 2)
+        .map((r) => ({
         type: "Feature",
         properties: { lineId: r.lineId, color: MODAL_COLOR[r.modal] ?? "#f99006" },
         geometry: {
@@ -189,8 +203,8 @@ export function MapView({
       ref={containerRef}
       role="region"
       aria-label="Mapa de Penedo"
-      className="absolute inset-0"
-      style={{ background: MODAL_BG.bus }}
+      className="absolute inset-0 w-full h-full"
+      style={{ background: MODAL_BG.bus, width: "100%", height: "100%" }}
     />
   );
 }

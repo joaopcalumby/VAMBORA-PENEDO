@@ -132,3 +132,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Impede que o reset universal do Tailwind (border-*, outline-*) interfira
+   nos elementos internos do Mapbox GL. */
+.mapboxgl-map,
+.mapboxgl-map * {
+  border: none;
+  outline: none;
+}
+.mapboxgl-ctrl-group button {
+  border: none;
+  box-sizing: border-box;
+}

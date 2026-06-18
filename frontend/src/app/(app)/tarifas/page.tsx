@@ -70,8 +70,16 @@ export default function TarifasPage() {
                     </span>
                     {line.name}
                   </span>
-                  <span className="font-semibold tabular-nums">
-                    {formatCents(line.default_price_cents)}
+                  <span className="font-semibold tabular-nums text-right">
+                    {line.modal === "ferry" ? (
+                      <span className="flex flex-col text-xs font-normal text-muted-foreground items-end gap-1">
+                        <span><span className="font-semibold text-foreground">Pedestre:</span> R$ 5,00</span>
+                        <span><span className="font-semibold text-foreground">Moto:</span> R$ 10,00</span>
+                        <span><span className="font-semibold text-foreground">Carro:</span> R$ 40,00</span>
+                      </span>
+                    ) : (
+                      formatCents(line.default_price_cents)
+                    )}
                   </span>
                 </li>
               ))}

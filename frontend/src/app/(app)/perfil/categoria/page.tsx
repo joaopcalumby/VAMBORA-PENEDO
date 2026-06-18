@@ -126,7 +126,7 @@ export default function CategoriaPage() {
       <section className="space-y-3">
         <h2 className="font-semibold">Solicitar categoria</h2>
         <ul className="space-y-2">
-          {categories.map((cat) => (
+          {categories.filter(c => !["pessoa", "moto", "carro"].includes(c.slug)).map((cat) => (
             <li key={cat.slug}>
               <button
                 type="button"

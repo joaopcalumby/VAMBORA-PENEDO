@@ -47,7 +47,7 @@ export default function InicioPage() {
     <div className="px-4 py-6 max-w-md mx-auto space-y-6">
       <header>
         <h1 className="text-2xl font-semibold">
-          Oi{firstName ? `, ${firstName}` : ""}
+          Oi{firstName ? `, ${firstName}` : ", usuário"}
         </h1>
       </header>
 

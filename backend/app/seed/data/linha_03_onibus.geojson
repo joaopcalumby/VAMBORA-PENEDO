@@ -3,113 +3,114 @@
   "features": [
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5395413, -10.2674353] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5453068, -10.2727124] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.542752, -10.2733248] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5438717, -10.2786973] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5463249, -10.2755778] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5487562, -10.2777079] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5497878, -10.2790695] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5526839, -10.2806016] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5475258, -10.2814558] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5478152, -10.2833373] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5509603, -10.2827555] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5529481, -10.2834487] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5500176, -10.2803617] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5551691, -10.2851247] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5582519, -10.281231] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5643804, -10.2820334] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5716916, -10.2835643] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5783143, -10.2864334] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.583827, -10.2887964] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.586174, -10.2901584] }
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"tipo": "ponto_parada"},
       "geometry": { "type": "Point", "coordinates": [-36.5834762, -10.2943812] }
     },
     {
       "type": "Feature",
       "properties": {
         "linha": 3,
+        "tipo": "rota",
         "nome": "Linha 3",
         "descricao": "Trajeto da Linha 3"
       },

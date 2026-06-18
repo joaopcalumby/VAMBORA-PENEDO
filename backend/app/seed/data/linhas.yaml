@@ -18,8 +18,8 @@
     idoso: 1.75
     sindicato: 1.75
 
-"2":
-  name: "Linha 02 — Bairro adicional"
+"02":
+  name: "Linha 02 — Bairro Gabriel"
   modal: bus
   default_price: 3.50
   category_prices:
@@ -27,8 +27,8 @@
     idoso: 1.75
     sindicato: 1.75
 
-"3":
-  name: "Linha 03 — Bairro adicional"
+"03":
+  name: "Linha 03 — Conjunto Mata Atlântica 01"
   modal: bus
   default_price: 3.50
   category_prices:

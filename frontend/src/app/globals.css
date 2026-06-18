@@ -256,44 +256,12 @@ body {
     background-clip: content-box;
 }
 
-@keyframes routeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.995);
-        filter: blur(2px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
+.mapboxgl-map,
+.mapboxgl-map * {
+  border: none;
+  outline: none;
 }
-
-@media (prefers-reduced-motion: reduce) {
-
-    .route-enter,
-    .page-enter,
-    .logo-float,
-    .loader-spinner-fill {
-        animation: none;
-    }
-}
-
-.mobile-carousel .splide__pagination {
-    bottom: -1.15rem;
-}
-
-.mobile-carousel .splide__pagination__page {
-    width: 0.5rem;
-    height: 0.5rem;
-    margin: 0 0.25rem;
-    background: #c6d0cb;
-    opacity: 1;
-    transition: transform 160ms ease, background-color 160ms ease;
-}
-
-.mobile-carousel .splide__pagination__page.is-active {
-    background: var(--accent);
-    transform: scale(1.18);
+.mapboxgl-ctrl-group button {
+  border: none;
+  box-sizing: border-box;
 }

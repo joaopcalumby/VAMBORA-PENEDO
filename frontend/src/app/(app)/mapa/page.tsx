@@ -117,7 +117,7 @@ export default function MapaPage() {
   }
 
   return (
-    <div className="relative h-[calc(100dvh-4rem)]">
+    <div className="relative" style={{ height: "calc(100dvh - 4rem)" }}>
       <MapView
         stops={stops}
         routes={visibleRoutes}

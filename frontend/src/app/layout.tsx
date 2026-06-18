@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 
 import { SessionProvider } from "@/components/auth/SessionProvider";
@@ -25,6 +26,8 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
+import { GlobalSplash } from "@/components/GlobalSplash";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -35,6 +38,7 @@ export default function RootLayout({
       className={`${inter.variable} h-full antialiased`}
     >
       <body className="min-h-dvh flex flex-col font-sans bg-background text-foreground">
+        <GlobalSplash />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

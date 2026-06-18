@@ -10,7 +10,7 @@ export const PENEDO_INITIAL_ZOOM = 13;
 // Estilo de tiles open-source da CartoDB (sem chave). Carto serve sob
 // licença ODbL com OSM data — citação no rodapé é boa prática.
 export const TILE_STYLE =
-  "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json";
+  "mapbox://styles/mapbox/light-v11";
 
 // Cor do traçado de cada modal — usar tokens da paleta deep-saffron para
 // linhas de ônibus mantém consistência com o resto da UI; van fica em

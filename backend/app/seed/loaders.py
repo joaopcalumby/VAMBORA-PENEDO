@@ -265,6 +265,8 @@ def seed_geojsons(db: Session, linhas: dict[str, Line]) -> None:
             ln = feat.get("properties", {}).get("linha")
             if ln is not None:
                 line_number = str(ln)
+                if line_number.isdigit() and len(line_number) == 1:
+                    line_number = "0" + line_number
                 break
 
         if line_number is None:

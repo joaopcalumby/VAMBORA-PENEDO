@@ -40,7 +40,7 @@ export default function CompletarCadastroPage() {
     try {
       await api("/auth/complete-profile", {
         method: "POST",
-        token: session.backendToken,
+        token: session?.backendToken || "",
         body: { cpf, birth_date: birthDate, phone, accept_terms: accept },
       });
       // Atualiza a sessão pra refletir o needsCompletion=false.
